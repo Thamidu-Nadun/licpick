@@ -42,7 +42,8 @@ export default async function init(options) {
 
                 if (res.reasons.length > 0) {
                     console.log(chalk.blue("Reasons:"));
-                    res.reasons.forEach(reason => console.log(`  • ${reason}`));
+                    let reasons = [...new Set(res.reasons)];
+                    reasons.forEach(reason => console.log(`  • ${reason}`));
                 }
             });
         }
