@@ -1,0 +1,27 @@
+{
+  "name": "licpick",
+  "version": "1.0.0",
+  "description": "smart CLI to recommend and generate open source licenses",
+  "license": "MIT",
+  "author": "Thamidu-Nadun",
+  "type": "module",
+  "bin": {
+    "licpick": "./src/main.js"
+  },
+  "keywords": [
+    "license",
+    "cli",
+    "open-source",
+    "generator",
+    "recommendation",
+    "thamidu-nadun"
+  ],
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "inquirer": "^13.4.2"
+  }
+}

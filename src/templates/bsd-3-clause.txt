@@ -1,0 +1,13 @@
+BSD 3-Clause License
+
+Copyright (c) [year], [fullname]
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice.
+2. Redistributions in binary form must reproduce the copyright notice.
+3. Neither the name of the copyright holder nor contributors may be used to
+   endorse or promote products without permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS "AS IS" WITHOUT WARRANTY.
