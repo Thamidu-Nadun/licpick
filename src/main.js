@@ -18,6 +18,7 @@ program
     .command("init")
     .description("Start the license recommendation process")
     .option("-d, --debug", "Show detailed recommendation reasoning")
+    .option("-a, --advanced", "Use an advanced questionnaire for more tailored recommendations")
     .action(init);
 
 program
@@ -39,3 +40,8 @@ program
 
 
 program.parse(process.argv);
+
+process.on("SIGINT", () => {
+    console.log(chalk.red("\nProcess interrupted. Exiting..."));
+    process.exit(0);
+})

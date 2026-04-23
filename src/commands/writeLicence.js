@@ -19,30 +19,54 @@ const writeLicence = async (options) => {
         return;
     }
 
-    const licenceFilePath = path.join(__dirname, "../templates/", `${licenceName}.txt`);
+    const licenceFilePath = path.join(__dirname, "..", "templates", "licence", `${licenceName}.txt`);
+    const licenceSnippetPath = path.join(__dirname, "..", "templates", "snippet", `${licenceName}.txt`);
 
     if (!fs.existsSync(licenceFilePath)) {
         console.error(chalk.red(`Licence template '${licenceName}' does not exist in the templates directory.`));
         return;
     }
 
-    const answer = await inquirer.prompt([{
-        type: "input",
-        name: "userName",
-        message: "Enter your name for the license (or leave blank for public domain):"
-    }]);
-    const userName = answer.userName || "Public Domain";
+    try {
+        const answer = await inquirer.prompt([{
+            type: "input",
+            name: "userName",
+            message: "Enter your name for the license (or leave blank for public domain):"
+        }]);
+        var userName = answer.userName || "Public Domain";
+    } catch (error) {
+        if (error.isTtyError || error.message.includes("User force closed the prompt")) {
+            console.log(chalk.yellow("\nOperation cancelled."));
+            process.exit(0);
+        }
+    }
+
+    if (fs.existsSync(licenceSnippetPath)) {
+        console.warn(chalk.yellow(`A snippet for '${licenceName}' already exists. It will be overwritten.`));
+    };
 
     let licenceContent = fs.readFileSync(licenceFilePath, "utf-8");
-    licenceContent = licenceContent.replaceAll("[fullname]", userName).replaceAll("[year]", new Date().getFullYear());
-    const outputPath = path.join(process.cwd(), "LICENSE");
+    let licenceSnippet = fs.readFileSync(licenceFilePath, "utf-8");
 
-    console.log(outputPath)
+    licenceContent = licenceContent.replaceAll("[fullname]", userName).replaceAll("[year]", new Date().getFullYear());
+    licenceSnippet = licenceSnippet.replaceAll("[fullname]", userName).replaceAll("[year]", new Date().getFullYear());
+
+    const outputPath = path.join(process.cwd(), "LICENSE");
+    const snippetOutputPath = path.join(process.cwd(), 'licence-header.txt');
+
     try {
         fs.writeFileSync(outputPath, licenceContent, "utf-8");
         console.log(chalk.green(`Successfully wrote ${licenceName} license to ${outputPath}.`));
     } catch (error) {
         console.error(chalk.red("Failed to write LICENSE file:"));
+        console.error(error);
+    }
+
+    try {
+        fs.writeFileSync(snippetOutputPath, licenceSnippet, "utf-8");
+        console.log(chalk.green(`Successfully wrote ${licenceName} license snippet to ${snippetOutputPath}.`));
+    } catch (error) {
+        console.error(chalk.red("Failed to write licence snippet file:"));
         console.error(error);
     }
 }

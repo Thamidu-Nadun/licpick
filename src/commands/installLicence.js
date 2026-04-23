@@ -25,8 +25,15 @@ const writeMetadataToPlugin = async (metadata) => {
     console.log(chalk.green(`Successfully installed licence '${metadata.name}' to advancedLicence plugin.`));
 }
 
+const writeLicenceSnippet = (licenceId, licenceSnippet) => {
+    const licencesFilePath = path.join(__dirname, "..", "templates", "snippet", `${licenceId}.txt`);
+    licenceSnippet = licenceSnippet.replaceAll(/\\n\\r|\\r\\n|\\n|\\r/g, "\n");
+    fs.writeFileSync(licencesFilePath, licenceSnippet, "utf-8");
+    console.log(chalk.green(`Successfully saved licence snippet to ${licencesFilePath}.`));
+};
+
 const writeFullLicenceData = (licenceId, licenceData) => {
-    const licencesFilePath = path.join(__dirname, "../templates/", `${licenceId}.txt`);
+    const licencesFilePath = path.join(__dirname, "..", "templates", "licence", `${licenceId}.txt`);
     licenceData = licenceData.replaceAll(/\\n\\r|\\r\\n|\\n|\\r/g, "\n");
     fs.writeFileSync(licencesFilePath, licenceData, "utf-8");
     console.log(chalk.green(`Successfully saved full licence data to ${licencesFilePath}.`));
@@ -48,8 +55,8 @@ const installLicence = async (options) => {
     }
     const licence = await res.json();
     // validate the structure of the remote licence data
-    if (typeof licence !== "object" || licence === null || typeof licence.metadata !== "object" || typeof licence.template !== "string") {
-        console.error(chalk.red(`Invalid licence format from ${remoteURL}. Expected an object with 'metadata' and 'template' properties.`));
+    if (typeof licence !== "object" || licence === null || typeof licence.metadata !== "object" || typeof licence.template !== "string" || typeof licence.snippet !== "string") {
+        console.error(chalk.red(`Invalid licence format from ${remoteURL}. Expected an object with 'metadata', 'template', and 'snippet' properties.`));
         return;
     }
 
@@ -70,6 +77,9 @@ const installLicence = async (options) => {
 
     // save the full licence data to licencs file
     writeFullLicenceData(licence.metadata.id, JSON.stringify(licence.template, null, 4));
+
+    // save the licence snippet to snippet file
+    writeLicenceSnippet(licence.metadata.id, licence.snippet);
 
     console.log(chalk.green(`Successfully installed licence from ${remoteURL}.`));
 };

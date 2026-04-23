@@ -7,11 +7,14 @@ import questions from "../questions.js";
 import writeLicence from '../utils/writeLicence.js';
 
 export default async function init(options) {
-    const { debug } = options || {};
+    const { debug, advanced } = options || {};
 
     console.log(chalk.cyan("LICENCE INIT"));
     if (debug) {
         console.log(chalk.magenta("Debug mode enabled. Detailed reasoning will be shown."));
+    }
+    if (advanced) {
+        console.log(chalk.yellow("Advanced mode enabled. Additional licenses will be included in recommendations."));
     }
 
     inquirer.prompt(questions).then(async (answers) => {
@@ -21,7 +24,13 @@ export default async function init(options) {
             console.log(answers);
         }
 
-        const allLicenses = [...licenses, ...advancedLicence];
+        let allLicenses;
+        if (advanced) {
+            console.log(chalk.yellow("Advanced license options enabled. Including additional licenses in recommendations."));
+            allLicenses = licenses.concat(advancedLicence);
+        } else {
+            allLicenses = licenses;
+        }
         // Get license recommendations based on user answers
         const results = recommend(allLicenses, answers);
 
@@ -60,6 +69,7 @@ export default async function init(options) {
                 message: `Do you want to write the ${best.name} license to a LICENSE file?`
             }
         ]);
+        console.log("\n");
         if (licenceWritable.write) {
             try {
                 writeLicence(best.id, licenceWritable.userName || "Public Domain");
@@ -69,9 +79,14 @@ export default async function init(options) {
             }
         }
 
-
     }).catch((error) => {
+        // Exit gracefully if user cancels with Ctrl+C
+        if (error.isTtyError || error.message.includes("User force closed the prompt")) {
+            console.log(chalk.yellow("\nOperation cancelled."));
+            process.exit(0);
+        }
         console.error(chalk.red("An error occurred while collecting license information:"));
         console.error(error);
+        process.exit(1);
     });
 } 
