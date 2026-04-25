@@ -54,17 +54,6 @@ export default [
         ]
     },
     {
-        id: "cc0",
-        name: "Creative Commons Zero",
-        traits: { copyleft: false, patent: false, publicDomain: true },
-        weight: { permissive: 5 },
-        explain: [
-            "Dedicates work to public domain",
-            "No restrictions on use",
-            "Ideal for content and data"
-        ]
-    },
-    {
         id: "isc",
         name: "ISC License",
         traits: { copyleft: false, patent: false },
@@ -73,6 +62,71 @@ export default [
             "Functionally equivalent to MIT",
             "Allows commercial use",
             "Simple and permissive"
+        ]
+    },
+    {
+        "id": "mpl-2.0",
+        "name": "Mozilla Public License 2.0",
+        "traits": {
+            "copyleft": true,
+            "patent": true,
+            "fileScopedCopyleft": true
+        },
+        "weight": {
+            "copyleft": 3,
+            "patent": 4
+        },
+        "explain": [
+            "Weak copyleft - file-scoped",
+            "Includes patent protection",
+            "Balance between permissive and copyleft"
+        ]
+    },
+    {
+        "id": "bsl-1.0",
+        "name": "Boost Software License 1.0",
+        "traits": {
+            "copyleft": false,
+            "patent": false
+        },
+        "weight": {},
+        "explain": [
+            "Very permissive license",
+            "Allows commercial use",
+            "Popular for C++ libraries"
+        ]
+    },
+    {
+        "id": "lgpl-3.0",
+        "name": "GNU Lesser GPL v3",
+        "traits": {
+            "copyleft": true,
+            "strict": false
+        },
+        "weight": {
+            "copyleft": 4
+        },
+        "explain": [
+            "Allows linking with non-GPL code",
+            "Requires modifications to be open source",
+            "Weaker copyleft than GPL"
+        ]
+    },
+    {
+        "id": "unlicense",
+        "name": "The Unlicense",
+        "traits": {
+            "copyleft": false,
+            "patent": false,
+            "publicDomain": true
+        },
+        "weight": {
+            "permissive": 5
+        },
+        "explain": [
+            "Dedicates work to public domain",
+            "No restrictions on use",
+            "Similar to CC0 but for software"
         ]
     }
 ];

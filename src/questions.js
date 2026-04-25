@@ -2,26 +2,30 @@ export default [
     {
         type: "confirm",
         name: "publicDomain",
-        message: "Do you want to give up all rights (public domain)?"
+        message: "Place this work in the public domain (no rights reserved)?"
     },
     {
         type: "confirm",
         name: "copyleft",
-        message: "Require open source for modifications?"
+        message: "Require modifications to remain open source?",
+        description: "Applies to anyone who receives your code"
     },
     {
         type: "confirm",
         name: "patent",
-        message: "Need patent protection?"
+        message: "Need explicit patent grants?",
+        description: "Protects against patent claims from contributors"
     },
     {
         type: "confirm",
-        name: "saas",
-        message: "Is this a SaaS/backend project?"
+        name: "network",
+        message: "Should network users have same copyleft obligations?",
+        description: "Applies copyleft even to remote service access (stricter enforcement)"
     },
     {
         type: "confirm",
         name: "strict",
-        message: "Do you want strict copyleft?"
+        message: "Apply the strictest copyleft (affects everything)?",
+        description: "Yes for GPL v3, No for MIT/Apache/ISC"
     }
 ];
