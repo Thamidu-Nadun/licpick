@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/licpick.svg)](https://www.npmjs.com/package/licpick)
 [![npm downloads](https://img.shields.io/npm/dm/licpick.svg)](https://www.npmjs.com/package/licpick)
-[![License: GPL](https://img.shields.io/badge/License--yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: GPL](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Licenses are confusing. MIT? Apache 2.0? GPL? **licpick** asks you a few simple questions about your project and shows you the best options. Then you can pick one and it writes the LICENSE file for you.
 
