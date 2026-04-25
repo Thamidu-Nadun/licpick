@@ -1,6 +1,6 @@
 {
   "name": "licpick",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "smart CLI to recommend and generate open source licenses",
   "license": "GPL-3.0-only",
   "author": "Thamidu-Nadun",
