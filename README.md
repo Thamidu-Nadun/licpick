@@ -1,23 +1,22 @@
-# licpick 🎯
+# licpick
 
-> A smart, interactive CLI tool that recommends the perfect open source license for your project
+> Pick the right open source license for your project without the headache
 
 [![npm version](https://img.shields.io/npm/v/licpick.svg)](https://www.npmjs.com/package/licpick)
 [![npm downloads](https://img.shields.io/npm/dm/licpick.svg)](https://www.npmjs.com/package/licpick)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: GPL](https://img.shields.io/badge/License--yellow.svg)](https://opensource.org/licenses/MIT)
 
-Choosing the right open source license can be overwhelming. **licpick** takes the guesswork out by asking simple questions about your project and recommending the most suitable license from a curated list of popular options.
+Licenses are confusing. MIT? Apache 2.0? GPL? **licpick** asks you a few simple questions about your project and shows you the best options. Then you can pick one and it writes the LICENSE file for you.
 
-## Features ✨
+## What It Does
 
-- 🤖 **Smart Recommendation Engine**: AI-powered scoring system based on your project's needs
-- ❓ **Interactive Questions**: Simple yes/no questions to understand your requirements
-- 📋 **8 Pre-built Licenses**: MIT, Apache 2.0, GPL 3.0, AGPL 3.0, BSD 3-Clause, ISC, CC0, and Mozilla Public License 2.0
-- 🔧 **Extensible Plugin System**: Add custom licenses to your project
-- 🎨 **Beautiful CLI**: Color-coded output with clear formatting
-- 📝 **Automatic License Installation**: Write license files directly to your project
-- 🔍 **Debug Mode**: Detailed reasoning behind recommendations
-- 🌐 **Remote License Support**: Install custom licenses from remote URLs
+- Asks 5 simple questions about your project
+- Scores all 8 licenses based on your answers
+- Shows top 3 matches with reasons why
+- Writes the license file with your name and current year
+- Supports 8 common licenses: MIT, Apache 2.0, GPL 3.0, AGPL 3.0, BSD 3-Clause, ISC, CC0, MPL 2.0
+- Lets you add custom licenses via URL
+- Has a debug mode to see the scoring in detail
 
 ## Installation
 
@@ -45,80 +44,58 @@ Then run it via npm scripts or `npx`:
 npx licpick init
 ```
 
-## Quick Start 🚀
+## Quick Start
 
-### Recommended License (Interactive)
+### Get a Recommendation
 
-Get personalized license recommendations:
+Answer a few questions and see what licenses match your needs:
 
 ```bash
 licpick init
 ```
 
-This will ask you 5 questions:
+You'll be asked:
 
-1. Do you want to give up all rights (public domain)?
-2. Require open source for modifications?
+1. Give up all rights (public domain)?
+2. Require modifications to stay open source?
 3. Need patent protection?
-4. Is this a SaaS/backend project?
-5. Do you want strict copyleft?
+4. Is this a backend/SaaS project?
+5. Want strict copyleft?
 
-The tool will then recommend the top 3 matching licenses and ask if you want to write the best one to your LICENSE file.
+Based on your answers, licpick shows the top 3 licenses and asks if you want to write one to your LICENSE file.
 
-**With Debug Mode:**
+**See the scoring:**
 
 ```bash
 licpick init --debug
 ```
 
-or
+This shows your answers and how each license scored.
+
+### Write Any License
+
+Pick a license and write it to your project. licpick will ask which one you want:
 
 ```bash
-licpick init -d
+licpick write
 ```
 
-Shows detailed scoring, your answers, and reasoning behind each recommendation.
+Or specify it directly:
 
-### List All Available Licenses
+```bash
+licpick write --licence mit
+licpick write -l apache-2.0
+```
 
-See all licenses available in your system:
+Either way, you'll be prompted for your name/organization, then the file gets created with your info and the current year filled in.
+
+### See All Available Licenses
 
 ```bash
 licpick list
 ```
 
-Output example:
-
-```
-Available Licenses: 8
-
-1. MIT License (mit)
-2. Apache License 2.0 (apache-2.0)
-3. GNU GPL v3 (gpl-3.0)
-4. GNU Affero GPL v3 (agpl-3.0)
-5. BSD 3-Clause License (bsd-3-clause)
-6. Creative Commons Zero (cc0)
-7. ISC License (isc)
-8. Mozilla Public License 2.0 (mpl-2.0)
-```
-
-### Write a Specific License
-
-Write a license directly without going through recommendations:
-
-```bash
-licpick write --licence mit
-```
-
-or
-
-```bash
-licpick write -l apache-2.0
-```
-
-Supported license IDs: `mit`, `apache-2.0`, `gpl-3.0`, `agpl-3.0`, `bsd-3-clause`, `cc0`, `isc`, `mpl-2.0`
-
-The tool will prompt for your name/organization and create a LICENSE file in your current directory.
+Shows all 8 built-in licenses plus any custom ones you've installed.
 
 ### Install Custom Licenses
 
@@ -201,75 +178,74 @@ Shows numbered list of all licenses with their names and IDs for use with the `w
 
 ### `licpick write`
 
-Write a specific license template to a LICENSE file in the current directory.
+Write a license directly to your LICENSE file. You can pick one from a menu or specify it:
 
-**Options:**
+```bash
+licpick write
+```
 
-- `-l, --licence <licenceName>` - **REQUIRED** - Name/ID of the license to write (e.g., `mit`, `gpl-3.0`)
+This shows a list of licenses and lets you pick.
 
-**Example:**
+Or specify it directly:
 
 ```bash
 licpick write --licence mit
 licpick write -l apache-2.0
-licpick write --licence gpl-3.0
 ```
 
-**What it does:**
+Licpick will ask for your name/organization, then create the file with your info and year filled in.
 
-1. Validates the license ID
-2. Prompts for your name/organization
-3. Creates a LICENSE file with personalized information
-4. Auto-fills `[fullname]` and `[year]` placeholders
+Supported IDs: `mit`, `apache-2.0`, `gpl-3.0`, `agpl-3.0`, `bsd-3-clause`, `cc0`, `isc`, `mpl-2.0`
+
+---
+
+### `licpick list`
+
+See all available licenses:
+
+```bash
+licpick list
+```
+
+Shows the 8 built-in licenses plus any custom ones you've installed.
 
 ---
 
 ### `licpick install`
 
-Install a custom license from a remote source and add it to your project's license set.
-
-**Options:**
-
-- `-u, --url <remoteURL>` - **REQUIRED** - URL pointing to the custom license JSON file
-
-**Example:**
+Add a custom license from a URL:
 
 ```bash
 licpick install --url https://example.com/license.json
 licpick install -u https://api.licenses.com/custom-license.json
 ```
 
-**What it does:**
+The license gets downloaded, validated, and added to your available options.
 
-1. Fetches the license data from the remote URL
-2. Validates the license structure and metadata
-3. Saves the metadata to `src/plugins/advancedLicence.js`
-4. Saves the full license template to `src/templates/`
-5. Makes it available for use with `init`, `list`, and `write` commands
+**License Format** (JSON):
+
+```json
+{
+  "metadata": {
+    "id": "custom-license",
+    "name": "My Custom License",
+    "traits": { "copyleft": false, "patent": true },
+    "weight": { "copyleft": 2, "patent": 3 },
+    "explain": ["Why you'd use this license"]
+  },
+  "template": "Full license text here with [fullname] and [year] placeholders..."
+}
+```
 
 ---
 
-### `licpick` (no command)
+## How the Scoring Works
 
-Shows help information and version.
+Licpick scores each license based on your answers. Each license has:
 
-**Options:**
-
-- `-v, --version` - Display version number
-
----
-
-## Understanding the Recommendation Engine
-
-The recommendation system works by scoring each license based on your answers:
-
-### Scoring Algorithm
-
-Each license has:
-
-- **Traits**: Boolean properties (copyleft, patent protection, etc.)
-- **Weight**: Numerical importance for each trait
-- **Explanations**: Reasons why this license is recommended
+- **Traits**: What it requires or allows (copyleft, patents, etc.)
+- **Weights**: How important each trait is for that license
+- **Reasons**: Short explanations of when to use it
 
 When you answer questions:
 
@@ -528,22 +504,27 @@ Created by [Thamidu-Nadun](https://github.com/Thamidu-Nadun)
 ## LICENSE
 
 ```java
-GNU GENERAL PUBLIC LICENSE
-Version 3, 29 June 2007
+MIT License
 
-Copyright (C) 2026 Thamidu-Nadun
+Copyright (c) 2026 Nadun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 ---

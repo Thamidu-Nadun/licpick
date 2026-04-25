@@ -22,10 +22,27 @@
   },
   "keywords": [
     "license",
-    "cli",
+    "license-selector",
+    "license-picker",
+    "license-chooser",
+    "license-recommendation",
+    "license-generator",
     "open-source",
-    "generator",
-    "recommendation",
-    "thamidu-nadun"
+    "open-source-license",
+    "licensing",
+    "cli",
+    "command-line",
+    "command-line-tool",
+    "interactive-cli",
+    "spdx",
+    "mit",
+    "apache-2.0",
+    "gpl",
+    "developer-tools",
+    "npm-tool",
+    "license-compliance",
+    "thamidu-nadun",
+    "thamidunadun",
+    "nadun"
   ]
 }
