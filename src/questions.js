@@ -2,30 +2,31 @@ export default [
     {
         type: "confirm",
         name: "publicDomain",
-        message: "Place this work in the public domain (no rights reserved)?"
+        message: "Can anyone use, modify, and sell your code without asking you?",
+        description: "This means you want to give up all your rights and let anyone do anything with your code"
     },
     {
         type: "confirm",
         name: "copyleft",
-        message: "Require modifications to remain open source?",
-        description: "Applies to anyone who receives your code"
+        message: "If someone modifies your code, must they share those changes publicly?",
+        description: "This ensures improvements are shared back with everyone"
     },
     {
         type: "confirm",
         name: "patent",
-        message: "Need explicit patent grants?",
-        description: "Protects against patent claims from contributors"
+        message: "Do you want protection if someone claims you used their patented technology?",
+        description: "This covers you if your code unknowingly includes someone's patented idea"
     },
     {
         type: "confirm",
         name: "network",
-        message: "Should network users have same copyleft obligations?",
-        description: "Applies copyleft even to remote service access (stricter enforcement)"
+        message: "If someone runs your code as a service online, must they share their changes?",
+        description: "Example: If you run code on a website, should you have to share your customizations?"
     },
     {
         type: "confirm",
         name: "strict",
-        message: "Apply the strictest copyleft (affects everything)?",
-        description: "Yes for GPL v3, No for MIT/Apache/ISC"
+        message: "Do you want the strictest sharing rules (everything using your code must be shared)?",
+        description: "This is the most restrictive - best if you want maximum sharing of improvements"
     }
 ];

@@ -4,10 +4,11 @@ import advancedLicence from "../plugins/advancedLicence.js";
 
 const listLicences = () => {
     const allLicenses = [...licenses, ...advancedLicence];
-    console.log(`${chalk.cyan("Available Licenses:")} ${chalk.greenBright(licenses.length)}\n`);
+    console.log(chalk.cyanBright.bold(`\n📚 Available Licenses: ${chalk.greenBright(allLicenses.length)}\n`));
     allLicenses.forEach((license, index) => {
-        console.log(chalk.yellow(`${index + 1}. ${license.name} (${license.id})`));
+        console.log(chalk.white(`  ${chalk.dim(String(index + 1).padStart(2, ' '))}. ${chalk.cyanBright(license.name)} ${chalk.dim(`(${license.id})`)}`));
     });
+    console.log();
 }
 
 export default listLicences;

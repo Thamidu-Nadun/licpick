@@ -3,19 +3,43 @@ import fs from "fs";
 import path from "path";
 import inquirer from "inquirer";
 import { fileURLToPath } from "url";
+import licenses from "../licenses.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const writeLicence = async (options) => {
-    const { licence: licenceName } = options;
+    let { licence: licenceName } = options;
     if (!licenceName) {
-        console.error(chalk.red("Please provide a licence name to write using the -l or --licence option."));
-        return;
-    }
+        try {
+            const licenceAnswer = await inquirer.prompt([
+                {
+                    type: "select",
+                    name: "licenceId",
+                    message: chalk.cyan("📜 Select a licence to write:"),
+                    loop: false,
+                    choices: licenses.map(licence => ({
+                        name: `${licence.name} ${chalk.dim(`(${licence.id})`)}`,
+                        value: licence.id
+                    }))
+                }
+            ]);
+            licenceName = licenceAnswer.licenceId;
+            console.log(chalk.green(`✓ Selected licence: ${chalk.bold(licenceName)}`));
+        } catch (error) {
+            if (error.isTtyError || error.message.includes("User force closed the prompt")) {
+                console.log(chalk.yellow("\n⊘ Operation cancelled."));
+                process.exit(0);
+            }
+            console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(" Failed to select a licence:"));
+            console.error(error);
+            return;
+        }
+    };
+
 
     if (!/^[a-zA-Z0-9_.\-]+$/.test(licenceName)) {
-        console.error(chalk.red("Invalid licence name. Only letters, numbers, underscores, hyphens, and dots are allowed."));
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + " Invalid licence name. Only letters, numbers, underscores, hyphens, and dots are allowed.");
         return;
     }
 
@@ -23,7 +47,7 @@ const writeLicence = async (options) => {
     const licenceSnippetPath = path.join(__dirname, "..", "templates", "snippet", `${licenceName}.txt`);
 
     if (!fs.existsSync(licenceFilePath)) {
-        console.error(chalk.red(`Licence template '${licenceName}' does not exist in the templates directory.`));
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(` Licence template '${licenceName}' does not exist in the templates directory.`));
         return;
     }
 
@@ -31,22 +55,25 @@ const writeLicence = async (options) => {
         const answer = await inquirer.prompt([{
             type: "input",
             name: "userName",
-            message: "Enter your name for the license (or leave blank for public domain):"
+            message: chalk.cyan("👤 Enter your name for the license (or leave blank for public domain):")
         }]);
         var userName = answer.userName || "Public Domain";
     } catch (error) {
         if (error.isTtyError || error.message.includes("User force closed the prompt")) {
-            console.log(chalk.yellow("\nOperation cancelled."));
+            console.log(chalk.yellow("\n⊘ Operation cancelled."));
             process.exit(0);
         }
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(" Failed to get user input:"));
+        console.error(error);
+        return;
     }
 
     if (fs.existsSync(licenceSnippetPath)) {
-        console.warn(chalk.yellow(`A snippet for '${licenceName}' already exists. It will be overwritten.`));
+        console.warn(chalk.yellow(`⚠ A snippet for '${licenceName}' already exists. It will be overwritten.`));
     };
 
     let licenceContent = fs.readFileSync(licenceFilePath, "utf-8");
-    let licenceSnippet = fs.readFileSync(licenceFilePath, "utf-8");
+    let licenceSnippet = fs.readFileSync(licenceSnippetPath, "utf-8");
 
     licenceContent = licenceContent.replaceAll("[fullname]", userName).replaceAll("[year]", new Date().getFullYear());
     licenceSnippet = licenceSnippet.replaceAll("[fullname]", userName).replaceAll("[year]", new Date().getFullYear());
@@ -56,17 +83,17 @@ const writeLicence = async (options) => {
 
     try {
         fs.writeFileSync(outputPath, licenceContent, "utf-8");
-        console.log(chalk.green(`Successfully wrote ${licenceName} license to ${outputPath}.`));
+        console.log(chalk.green(`✓ Successfully wrote ${chalk.bold(licenceName)} license to ${chalk.underline(outputPath)}`));
     } catch (error) {
-        console.error(chalk.red("Failed to write LICENSE file:"));
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(" Failed to write LICENSE file:"));
         console.error(error);
     }
 
     try {
         fs.writeFileSync(snippetOutputPath, licenceSnippet, "utf-8");
-        console.log(chalk.green(`Successfully wrote ${licenceName} license snippet to ${snippetOutputPath}.`));
+        console.log(chalk.green(`✓ Successfully wrote ${chalk.bold(licenceName)} license snippet to ${chalk.underline(snippetOutputPath)}`));
     } catch (error) {
-        console.error(chalk.red("Failed to write licence snippet file:"));
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(" Failed to write licence snippet file:"));
         console.error(error);
     }
 }

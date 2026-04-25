@@ -9,24 +9,24 @@ import writeLicence from '../utils/writeLicence.js';
 export default async function init(options) {
     const { debug, advanced } = options || {};
 
-    console.log(chalk.cyan("LICENCE INIT"));
+    console.log(chalk.cyanBright.bold("\n📋 LICENSE INITIALIZATION\n"));
     if (debug) {
-        console.log(chalk.magenta("Debug mode enabled. Detailed reasoning will be shown."));
+        console.log(chalk.magentaBright("🔍 Debug mode enabled. Detailed reasoning will be shown."));
     }
     if (advanced) {
-        console.log(chalk.yellow("Advanced mode enabled. Additional licenses will be included in recommendations."));
+        console.log(chalk.yellowBright("⭐ Advanced mode enabled. Additional licenses included."));
     }
 
     inquirer.prompt(questions).then(async (answers) => {
-        console.log(chalk.green("License information collected successfully!"));
+        console.log(chalk.greenBright("✓ License information collected successfully!"));
         if (debug) {
-            console.log(chalk.magenta("Your Answers:"));
+            console.log(chalk.magentaBright("\n🔍 Your Answers:"));
             console.log(answers);
         }
 
         let allLicenses;
         if (advanced) {
-            console.log(chalk.yellow("Advanced license options enabled. Including additional licenses in recommendations."));
+            console.log(chalk.yellowBright("⭐ Advanced license options enabled. Including additional licenses."));
             allLicenses = licenses.concat(advancedLicence);
         } else {
             allLicenses = licenses;
@@ -36,25 +36,26 @@ export default async function init(options) {
 
         // Display detailed reasoning if debug mode is enabled
         if (debug) {
-            console.log(chalk.magenta("\nTop License Recommendations:"));
+            console.log(chalk.magentaBright("\n🏆 Top License Recommendations:"));
             results.forEach((res, index) => {
-                console.log(chalk.yellow(`\n${index + 1}. ${res.name} (Score: ${res.score})`));
+                console.log(chalk.cyanBright(`\n${index + 1}. ${res.name} (Score: ${res.score})`));
 
                 if (res.reasons.length > 0) {
-                    console.log(chalk.blue("Reasons:"));
+                    console.log(chalk.blueBright("📝 Reasons:"));
                     let reasons = [...new Set(res.reasons)];
-                    reasons.forEach(reason => console.log(`  • ${reason}`));
+                    reasons.forEach(reason => console.log(`  ${chalk.gray("→")} ${reason}`));
                 }
             });
         }
 
         // Display the best recommendation
         const best = results[0];
-        console.log(chalk.magentaBright(`\nRecommended License: ${best.name}`));
+        console.log(chalk.bgMagenta.white.bold(`\n 🎯 RECOMMENDED: ${best.name} `));
 
         if (best.reasons.length > 0) {
-            console.log(chalk.blue("Reasons:"));
-            best.reasons.forEach(reason => console.log(`  ${chalk.green("✔")} ${chalk.dim(reason)}`));
+            console.log(chalk.blueBright("\n📝 Why this license:"));
+            let uniqueReasons = [...new Set(best.reasons)];
+            uniqueReasons.forEach(reason => console.log(`  ${chalk.greenBright("✓")} ${reason}`));
         }
 
         // write the recommended license to a file
@@ -62,12 +63,12 @@ export default async function init(options) {
             {
                 type: "input",
                 name: "userName",
-                message: "Enter your name for the license (or leave blank for public domain):"
+                message: chalk.cyan("👤 Enter your name for the license (or leave blank for public domain):")
             },
             {
                 type: "confirm",
                 name: "write",
-                message: `Do you want to write the ${best.name} license to a LICENSE file?`
+                message: chalk.cyan(`📝 Write the ${chalk.bold(best.name)} license to a LICENSE file?`)
             }
         ]);
         console.log("\n");
@@ -75,7 +76,7 @@ export default async function init(options) {
             try {
                 writeLicence(best.id, licenceWritable.userName || "Public Domain");
             } catch (error) {
-                console.error(chalk.red("Failed to write LICENSE file:"));
+                console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(" Failed to write LICENSE file:"));
                 console.error(error);
             }
         }
@@ -83,10 +84,10 @@ export default async function init(options) {
     }).catch((error) => {
         // Exit gracefully if user cancels with Ctrl+C
         if (error.isTtyError || error.message.includes("User force closed the prompt")) {
-            console.log(chalk.yellow("\nOperation cancelled."));
+            console.log(chalk.yellow("\n⊘ Operation cancelled."));
             process.exit(0);
         }
-        console.error(chalk.red("An error occurred while collecting license information:"));
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(" Failed to collect license information:"));
         console.error(error);
         process.exit(1);
     });

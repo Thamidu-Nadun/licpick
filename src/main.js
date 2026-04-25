@@ -61,6 +61,6 @@ program
 program.parse(process.argv);
 
 process.on("SIGINT", () => {
-    console.log(chalk.red("\nProcess interrupted. Exiting..."));
+    console.log(chalk.yellow("\n⊘ Process interrupted. Exiting..."));
     process.exit(0);
 })

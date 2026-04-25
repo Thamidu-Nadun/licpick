@@ -17,13 +17,13 @@ const writeLicence = (licenceId, userName) => {
     const snippetPath = path.join(__dirname, '..', 'templates', 'snippet', `${licenceId}.txt`);
 
     if (!fs.existsSync(licencePath)) {
-        console.error(chalk.red(`License template for ${licenceId} not found!`));
+        console.error(chalk.bgRed.white(" ✗ ERROR ") + chalk.red(` License template for ${licenceId} not found!`));
         throw new Error(`License template for ${licenceId} not found!`);
     }
 
     // Snippet is optional, but if it exists, we can use it for more detailed templates
     if (!fs.existsSync(snippetPath)) {
-        console.error(chalk.red(`License snippet for ${licenceId} not found!`));
+        console.error(chalk.yellow(`⚠ License snippet for ${licenceId} not found!`));
     }
 
     let licenceContent = fs.readFileSync(licencePath, 'utf-8');
@@ -34,26 +34,26 @@ const writeLicence = (licenceId, userName) => {
     snippetContent = snippetContent.replaceAll('[fullname]', userName).replace('[year]', year);
 
     fs.writeFileSync('LICENSE', licenceContent);
-    console.log(chalk.green(`LICENSE created successfully with ${licenceId} template!`));
+    console.log(chalk.greenBright(`✓ LICENSE created successfully with ${chalk.bold(licenceId)} template!`));
 
     const headerPath = 'licence-header.txt';
     if (fs.existsSync(headerPath)) {
-        console.warn(chalk.yellow(`Warning: ${headerPath} already exists and will be overwritten!`));
+        console.warn(chalk.yellow(`⚠ ${headerPath} already exists and will be overwritten!`));
     }
     fs.writeFileSync(headerPath, snippetContent);
 
     const headerResponse = `
-File: ${headerPath}
+📋 File: ${chalk.cyan(headerPath)}
 
-Next step:
-  - Copy this header into the top of your source files (optional but recommended)
-  - Keep the full license in the LICENSE file (required)
+🔗 Next steps:
+  → Copy this header into the top of your source files (optional)
+  → Keep the full license in the LICENSE file (required)
 
-Full license is available in LICENSE.
+📄 Full license available in ${chalk.cyan("LICENSE")}
 
-Tip: Headers help clearly show license ownership per file.`;
-    console.log(chalk.green('✔ Header created successfully'));
-    console.log(chalk.cyan(headerResponse));
+💡 Tip: Headers help clearly show license ownership per file.`;
+    console.log(chalk.greenBright('✓ Header created successfully'));
+    console.log(chalk.dim(headerResponse));
 }
 
 export default writeLicence;
