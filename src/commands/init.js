@@ -21,7 +21,11 @@ export default async function init(options) {
         console.log(chalk.greenBright("✓ License information collected successfully!"));
         if (debug) {
             console.log(chalk.magentaBright("\n🔍 Your Answers:"));
-            console.log(answers);
+            let answersTable = Object.fromEntries(Object.entries(answers).map(([feature, enabled]) => [
+                feature,
+                enabled ? '✅' : '❌'
+            ]));
+            console.table(answersTable);
         }
 
         let allLicenses;
